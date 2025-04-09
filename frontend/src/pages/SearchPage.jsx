@@ -11,7 +11,7 @@ const SearchPage = () => {
   const navigate = useNavigate(); // Navigation function
 
   useEffect(() => {
-    if (location.pathname === "/search" && products.length === 0) {
+    if (location.pathname === "/search" && products?.length === 0) {
       setTimeout(() => {
         navigate("/"); // Redirect to home page after 3 seconds
       }, 3000);

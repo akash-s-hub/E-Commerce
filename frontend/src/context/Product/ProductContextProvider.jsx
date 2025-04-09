@@ -1,11 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { toast, Bounce } from "react-toastify";
 import ProductContext from "./ProductContext.js";
 import config from "../../../config.js";
+import axios from "axios";
 
 const ProductContextProvider = ({ children }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [products, setProducts] = useState([]);
+  const [popularProducts, setPopularProducts] = useState([]);
 
   const handleSearch = async (e, navigate) => {
     e.preventDefault();
@@ -28,7 +30,7 @@ const ProductContextProvider = ({ children }) => {
       const response = await fetch(`${config.backendUrl}/api/products/search?query=${searchQuery}`);
       const data = await response.json();
 
-      if (data.products.length === 0) {
+      if (data.length === 0) {
         setProducts([])
         toast("No products found! ", {
           position: "top-center",
@@ -43,9 +45,8 @@ const ProductContextProvider = ({ children }) => {
         setTimeout(() => {
           navigate("/"); // Redirect immediately after showing toast
         }, 4000);
-
       } else {
-        setProducts(data.products);
+        setProducts(data);
         navigate("/search");
       }
       setSearchQuery(""); // Clear search query after submission
@@ -54,8 +55,21 @@ const ProductContextProvider = ({ children }) => {
     }
   };
 
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const { data } = await axios.get(`${config.backendUrl}/api/products/popular`);
+        setPopularProducts(data);
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
   return (
-    <ProductContext.Provider value={{ handleSearch, searchQuery, setSearchQuery, products }}>
+    <ProductContext.Provider value={{ handleSearch, searchQuery, setSearchQuery, products, popularProducts }}>
       {children}
     </ProductContext.Provider>
   );

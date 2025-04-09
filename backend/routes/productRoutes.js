@@ -90,8 +90,7 @@ router.get("/search", async (req, res) => {
       ]
     });
 
-    console.log(products);
-    res.json({ products });
+    res.json(products);
   } catch (error) {
     console.error("Error fetching products:", error);
     res.status(500).json({ message: "Server error while searching" });

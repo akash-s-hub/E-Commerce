@@ -1,34 +1,21 @@
-import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useContext } from "react";
 import { MdAddShoppingCart } from "react-icons/md";
 import { Link } from "react-router-dom";
-import config from "../../config";
 import StarRating from "./StarRating";
+import ProductContext from "../context/Product/ProductContext";
 
 const Popular = () => {
-  const [products, setProducts] = useState([]);
+  const { popularProducts } = useContext(ProductContext)
 
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const { data } = await axios.get(`${config.backendUrl}/api/products/popular`);
-        setProducts(data);
-      } catch (error) {
-        console.error("Error fetching products:", error);
-      }
-    };
-
-    fetchProducts();
-  }, []);
 
   return (
     <div className="w-full pb-6 px-6 rounded-lg mb-8">
       <h2 className="text-black text-xl font-semibold mb-4 text-center">Popular Products</h2>
-      {products.length === 0 ? (
+      {popularProducts.length === 0 ? (
         <p className="text-center text-gray-500">No Popular Products available.</p>
       ) : (
         <div className="max-h-max w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-          {products.map((product) => (
+          {popularProducts.map((product) => (
             <div key={product._id} className="bg-white w-full h-max bg-center p-4 rounded-lg shadow flex flex-col items-center justify-center">
               <Link to={`/product/${product._id}`} className="w-full h-[200px] rounded-xl mb-4 bg-center">
                 <img
