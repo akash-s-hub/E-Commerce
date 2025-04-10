@@ -1,6 +1,6 @@
 // config.js
 const config = {
-  backendUrl: "https://e-commerce-backend-i7k3.onrender.com",
+  backendUrl: import.meta.env.VITE_API_URL
 };
 
 export default config;
