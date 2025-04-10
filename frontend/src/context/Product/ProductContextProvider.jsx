@@ -28,6 +28,7 @@ const ProductContextProvider = ({ children }) => {
     }
 
     try {
+      setLoading(true); // Start loading during search
       const response = await fetch(`${config.backendUrl}/api/products/search?query=${searchQuery}`);
       const data = await response.json();
 
@@ -53,6 +54,8 @@ const ProductContextProvider = ({ children }) => {
       setSearchQuery(""); // Clear search query after submission
     } catch (error) {
       console.error("Error fetching products:", error);
+    } finally {
+      setLoading(false); // Stop loading
     }
   };
 

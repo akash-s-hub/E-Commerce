@@ -6,22 +6,27 @@ import { StarRating } from "../components";
 import { useLocation, useNavigate } from "react-router-dom";
 
 const SearchPage = () => {
-  const { products, searchQuery } = useContext(ProductContext);
+  const { products, searchQuery, loading } = useContext(ProductContext); // Access loading from context
   const location = useLocation(); // Get current route
   const navigate = useNavigate(); // Navigation function
 
   useEffect(() => {
-    if (location.pathname === "/search" && products?.length === 0) {
+    if (!loading && location.pathname === "/search" && products?.length === 0) {
       setTimeout(() => {
         navigate("/"); // Redirect to home page after 3 seconds
       }, 3000);
     }
-  }, [location.pathname, products, searchQuery, navigate]); // Run effect when route/products change
+  }, [location.pathname, products, searchQuery, loading, navigate]); // Run effect when route/products change
 
   return (
     <div className="w-full max-w-screen-xl mx-auto px-4 md:px-8 pt-10 mb-8">
       <h2 className="text-xl font-bold mb-6 text-center">Search Results</h2>
-      {products.length === 0 ? (
+      {loading ? (
+        // Loading Spinner
+        <div className="w-full h-[200px] flex justify-center items-center">
+          <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500"></div>
+        </div>
+      ) : products.length === 0 ? (
         <p className="text-center text-gray-600">No products found. Redirecting to home page...</p>
       ) : (
         <div className="grid gap-8">
