@@ -1,75 +1,116 @@
+// Step 1: Import necessary dependencies
 import axios from 'axios';
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import config from '../../config';
 import { Link, useParams } from 'react-router-dom';
 import StarRating from './StarRating';
 import { MdAddShoppingCart } from 'react-icons/md';
 
+// Step 2: Define the SameBrandProduct component
 const SameBrandProduct = () => {
-  const { brand } = useParams();
-  const [products, setProducts] = useState([])
+  const { brand } = useParams(); // Extract the brand from the route parameters
+  const [products, setProducts] = useState([]); // State to hold the products
+  const [isLoading, setIsLoading] = useState(true); // Loading state
 
+  // Step 3: Fetch products based on the brand when the component is mounted
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         const { data } = await axios.get(`${config.backendUrl}/api/products/brand/${brand}`);
-        setProducts(data);
+        setProducts(data); // Set the fetched products in the state
       } catch (error) {
-        console.error("Error fetching products:", error);
+        console.error('Error fetching products:', error);
+      } finally {
+        setIsLoading(false); // Stop loading after fetching is complete
       }
     };
-    fetchProducts();
-  }, []);
+    fetchProducts(); // Call the fetch function
+  }, [brand]); // Re-run the effect if the brand changes
 
+  // Step 4: Return the JSX layout
   return (
-    <div className="min-h-max w-full mt-16 px-6 rounded-lg">
-      <h2 className="text-black text-xl font-bold pt-4 mb-4 text-center uppercase">Products by {brand}</h2>
-      {products.length === 0 ? (
+    <div className="w-full max-w-screen-xl mx-auto mb-8 mt-8 pt-10 md:mt-10 px-10 md:px-16">
+      {/* Step 5: Heading */}
+      <h2 className="text-xl font-bold mb-6 text-center uppercase">Products by {brand}</h2>
+
+      {/* Step 6: Conditional rendering for loading, products, or empty state */}
+      {isLoading ? (
+        // Loader Section
+        <div className="w-full h-[200px] flex justify-center items-center">
+          <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500"></div>
+        </div>
+      ) : products.length === 0 ? (
         <p className="text-center text-gray-500">No products available.</p>
       ) : (
-        <div className="min-h-screen w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+        // Step 7: Grid container for products
+        <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6">
+          {/* Step 8: Map through products and render each product */}
           {products.map((product) => (
-            <div key={product._id} className="bg-white w-full h-max bg-center p-4 rounded-lg shadow flex flex-col items-center justify-center">
-              <Link to={`/product/${product._id}`} className="w-full h-[200px] rounded-xl mb-4 bg-center">
+            <div
+              key={product._id}
+              className="bg-white w-full h-auto p-4 rounded-lg shadow flex flex-col items-center justify-center"
+            >
+              {/* Step 9: Product image */}
+              <Link to={`/product/${product._id}`} className="w-full h-[250px] md:h-[300px] lg:h-[300px] rounded-xl mb-4 bg-center">
                 <img
                   className="w-full h-full object-cover rounded-xl"
                   src={product.images[0]}
                   alt={product.name}
                 />
               </Link>
-              <Link to={`/product/${product._id}`} className="text-lg w-full font-semibold line-clamp-1">
+
+              {/* Step 10: Product name */}
+              <Link to={`/product/${product._id}`} className="text-lg md:text-xl w-full font-semibold line-clamp-1 text-center">
                 {product.name}
               </Link>
-              <p className="text-gray-600 w-full text-xs line-clamp-2">{product.description}</p>
-              <Link to={`/product/${product._id}`} className="flex items-center justify-start text-blue-600 w-full font-bold mt-2">
+
+              {/* Step 11: Product description */}
+              <p className="text-gray-600 w-full text-sm md:text-base line-clamp-2 text-center mt-2">
+                {product.description}
+              </p>
+
+              {/* Step 12: Product price */}
+              <Link to={`/product/${product._id}`} className="flex items-center justify-center text-blue-600 w-full font-bold mt-4 text-lg">
                 ₹ {product.price}
               </Link>
-              <div className="mt-2 w-full flex items-center justify-evenly">
+
+              {/* Step 13: Product rating */}
+              <div className="mt-4 w-full flex items-center justify-center">
                 <StarRating rating={product.rating.average} />
-                <div className="flex flex-col justify-center items-center w-full">
-                  <span className="text-xs text-gray-500">{product.rating.average}</span>
-                  <span className="text-xs text-gray-500">({product.rating.ratingCount})</span>
+                <div className="flex flex-col justify-center items-end">
+                  <span className="text-xs text-gray-500">
+                    {product.rating.average}
+                  </span>
+                  <span className="text-xs text-gray-500">
+                    ({product.rating.ratingCount})
+                  </span>
                 </div>
               </div>
-              <div className="w-full h-auto flex items-center justify-center gap-2 mt-4">
-                {product.sales == product.stock ?
-                  <span className="text-red-500 font-bold text-base">Out of Stock</span> :
+
+              {/* Step 14: Actions (Buy Now and Add to Cart) */}
+              <div className="w-full flex items-center justify-center gap-4 mt-4">
+                {product.sales === product.stock ? (
+                  <span className="text-red-500 font-bold text-sm text-center w-full">
+                    Out of Stock
+                  </span>
+                ) : (
                   <>
-                    <button className="bg-blue-500 flex items-center justify-center text-sm h-full text-white p-2 rounded-md">
+                    <button className="bg-blue-500 flex items-center justify-center text-sm h-10 text-white px-4 py-2 rounded-md">
                       Buy Now
                     </button>
-                    <button className="border border-blue-500 flex items-center justify-center text-sm h-full text-blue-500 p-2 rounded-md">
+                    <button className="border border-blue-500 flex items-center justify-center text-sm h-10 w-10 text-blue-500 p-2 rounded-md">
                       <MdAddShoppingCart />
                     </button>
                   </>
-                }
+                )}
               </div>
             </div>
           ))}
         </div>
       )}
-    </div >
-  )
-}
+    </div>
+  );
+};
 
-export default SameBrandProduct
+// Step 15: Export the component
+export default SameBrandProduct;

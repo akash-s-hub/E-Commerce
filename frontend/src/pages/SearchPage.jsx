@@ -18,55 +18,86 @@ const SearchPage = () => {
     }
   }, [location.pathname, products, searchQuery, navigate]); // Run effect when route/products change
 
-
   return (
-    <div className="m-20 w-full h-max">
-      <h2 className="text-xl font-bold mb-4">Search Results</h2>
+    <div className="w-full max-w-screen-xl mx-auto px-4 md:px-8 pt-10 mb-8">
+      <h2 className="text-xl font-bold mb-6 text-center">Search Results</h2>
       {products.length === 0 ? (
-        <p>No products found. Redirecting to home page....</p>
+        <p className="text-center text-gray-600">No products found. Redirecting to home page...</p>
       ) : (
-        <div className="w-full pb-6 px-6 rounded-lg mb-8">
-          <div className="max-h-max w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+        <div className="grid gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {products.map((product) => (
-              <div key={product._id} className="bg-white w-full h-max bg-center p-4 rounded-lg shadow flex flex-col items-center justify-center">
-                <Link to={`/product/${product._id}`} className="w-full h-[200px] rounded-xl mb-4 bg-center">
+              <div
+                key={product._id}
+                className="bg-white w-full h-auto p-6 rounded-lg shadow flex flex-col items-center justify-start"
+              >
+                {/* Product Image */}
+                <Link
+                  to={`/product/${product._id}`}
+                  className="w-full h-[250px] md:h-[300px] lg:h-[300px] rounded-xl mb-4 bg-center"
+                >
                   <img
                     className="w-full h-full object-cover rounded-xl"
                     src={product.images[0]}
                     alt={product.name}
                   />
                 </Link>
-                <Link to={`/product/${product._id}`} className="text-lg w-full font-semibold line-clamp-1">
+
+                {/* Product Name */}
+                <Link
+                  to={`/product/${product._id}`}
+                  className="text-lg md:text-xl w-full font-semibold line-clamp-1 text-center"
+                >
                   {product.name}
                 </Link>
-                <p className="text-gray-600 w-full text-xs line-clamp-2">{product.description}</p>
-                <Link to={`/product/${product._id}`} className="flex items-center justify-start text-blue-600 w-full font-bold mt-2">
+
+                {/* Product Description */}
+                <p className="text-gray-600 w-full text-sm md:text-base line-clamp-2 text-center mt-2">
+                  {product.description}
+                </p>
+
+                {/* Product Price */}
+                <Link
+                  to={`/product/${product._id}`}
+                  className="flex items-center justify-center text-blue-600 w-full font-bold mt-4 text-lg"
+                >
                   ₹ {product.price}
                 </Link>
-                <div className="mt-2 w-full flex items-center justify-evenly">
+
+                {/* Product Rating */}
+                <div className="mt-4 w-full flex items-center justify-between">
                   <StarRating rating={product.rating.average} />
-                  <div className="flex flex-col justify-center items-center w-full">
-                    <span className="text-xs text-gray-500">{product.rating.average}</span>
-                    <span className="text-xs text-gray-500">({product.rating.ratingCount})</span>
+                  <div className="flex flex-col justify-center items-end">
+                    <span className="text-xs text-gray-500">
+                      {product.rating.average}
+                    </span>
+                    <span className="text-xs text-gray-500">
+                      ({product.rating.ratingCount})
+                    </span>
                   </div>
                 </div>
-                <div className="w-full h-auto flex items-center justify-center gap-2 mt-4">
-                  {product.sales == product.stock ?
-                    <span className="text-red-500 font-bold text-base">Out of Stock</span> :
+
+                {/* Actions */}
+                <div className="w-full flex items-center justify-between gap-4 mt-4">
+                  {product.sales === product.stock ? (
+                    <span className="text-red-500 font-bold text-sm text-center w-full">
+                      Out of Stock
+                    </span>
+                  ) : (
                     <>
-                      <button className="bg-blue-500 flex items-center justify-center text-sm h-full text-white p-2 rounded-md">
+                      <button className="bg-blue-500 flex items-center justify-center text-sm h-10 text-white px-4 py-2 rounded-md">
                         Buy Now
                       </button>
-                      <button className="border border-blue-500 flex items-center justify-center text-sm h-full text-blue-500 p-2 rounded-md">
+                      <button className="border border-blue-500 flex items-center justify-center text-sm h-10 w-10 text-blue-500 p-2 rounded-md">
                         <MdAddShoppingCart />
                       </button>
                     </>
-                  }
+                  )}
                 </div>
               </div>
             ))}
           </div>
-        </div >
+        </div>
       )}
     </div>
   );

@@ -1,6 +1,6 @@
 // config.js
 const config = {
-  backendUrl: "http://localhost:8000",
+  backendUrl: "https://e-commerce-backend-i7k3.onrender.com",
 };
 
 export default config;

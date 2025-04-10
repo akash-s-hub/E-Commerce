@@ -42,11 +42,9 @@ const AddProductContextProvider = ({ children }) => {
   });
 
   return (
-    <div>
-      <AddProductContext.Provider value={{ productData, setProductData, handleChange, handleSubmit }}>
-        {children}
-      </AddProductContext.Provider>
-    </div>
+    <AddProductContext.Provider value={{ productData, setProductData, handleChange, handleSubmit }}>
+      {children}
+    </AddProductContext.Provider>
   )
 }
 

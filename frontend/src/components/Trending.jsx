@@ -23,13 +23,13 @@ export default function Trending() {
     fetchProduct();
   }, []);
 
-  // ✅ **Auto-slide using `useRef()` instead of state dependency**
+  // Auto-slide using `useRef()` instead of state dependency
   useEffect(() => {
     if (!trending.length) return;
 
     timerRef.current = setInterval(() => {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % trending.length);
-    }, 7000); // Set auto-slide every 7 secs
+    }, 7000); // Set auto-slide every 7 seconds
 
     return () => clearInterval(timerRef.current); // Cleanup timer
   }, [trending]); // Only runs once when trending loads
@@ -40,7 +40,7 @@ export default function Trending() {
       return (prevIndex + direction) % trending.length;
     });
 
-    // ✅ Reset timer on user interaction without re-rendering the component
+    // Reset timer on user interaction without re-rendering the component
     clearInterval(timerRef.current);
     timerRef.current = setInterval(() => {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % trending.length);
@@ -48,53 +48,76 @@ export default function Trending() {
   };
 
   return (
-    <section id="trending" className="relative w-full h-screen max-h-[30rem] bg-[#f8f8f8] overflow-hidden pt-20">
-      <div className="absolute flex items-center justify-center h-full top-1/2 left-4 transform -translate-y-1/2 cursor-pointer z-10 bg-transparent">
-        <FaChevronLeft onClick={() => handleNavigation(-1)} className="text-3xl text-gray-700 hover:text-black" />
-      </div>
-      {trending.map((product, index) => (
+    <section
+      id="trending"
+      className="relative w-full max-w-7xl mx-auto mt-8 pt-10 md:mt-10 px-10 md:px-16 bg-[#f8f8f8]"
+    >
+      {/* Carousel Wrapper */}
+      <div className="relative w-full overflow-hidden">
+        {/* Carousel Items */}
         <div
-          key={product._id}
-          className={`absolute w-screen h-[80%] flex items-center justify-center text-black text-3xl transition-transform duration-700 ease-in-out`}
-          style={{ transform: `translateX(${(index - currentIndex) * 100}%)` }}
+          className="flex transition-transform duration-700 ease-in-out"
+          style={{ transform: `translateX(-${currentIndex * 100}%)` }}
         >
-          <div className="description pl-28 pr-10 flex flex-col flex-wrap items-start justify-center w-[60%] h-full gap-10">
-            <div className="text-gray-600 text-lg font-medium">TRENDING NOW</div>
-            <Link to={`/product/${product._id}`} className="text-3xl p-1 line-clamp-3 font-bold">
-              {product.name}
-            </Link>
-            <div className="text-sm text-gray-600 line-clamp-2">{product.description}</div>
-            <div className="flex items-center text-sm gap-4">
-              {product.sales === product.stock ? (
-                <span className="text-red-500 font-bold text-base">Out of Stock</span>
-              ) : (
-                <>
-                  <button className="bg-blue-500 flex items-center justify-center text-sm h-full text-white p-2 rounded-md">
-                    Buy Now
-                  </button>
-                  <button className="border border-blue-500 flex items-center justify-center text-sm h-10 w-10 text-blue-500 p-2 rounded-md">
-                    <MdAddShoppingCart />
-                  </button>
-                </>
-              )}
-              <button className="ml-5 text-2xl text-red-600">
-                <FaRegHeart />
-              </button>
+          {trending.map((product, index) => (
+            <div key={product._id} className="flex-shrink-0 w-full">
+              <div className="flex flex-col md:flex-row items-center justify-between w-full gap-6 md:gap-10">
+                {/* Image Section */}
+                <div className="image flex items-center justify-center w-full md:w-[40%]">
+                  <Link to={`/product/${product._id}`}>
+                    <img
+                      className="h-[300px] w-[300px] md:h-[300px] md:w-[300px] lg:h-[400px] lg:w-[400px] border border-black rounded-lg object-cover bg-center transform scale-90 transition-transform duration-300 hover:scale-95"
+                      src={product.images[0]}
+                      alt={product.name}
+                    />
+                  </Link>
+                </div>
+
+                {/* Text Section */}
+                <div className="description p-5 flex flex-col items-start justify-center w-full md:w-[60%] gap-4 md:gap-6">
+                  <div className="text-gray-600 text-lg md:text-xl font-medium">TRENDING NOW</div>
+                  <Link to={`/product/${product._id}`} className="text-2xl md:text-3xl p-1 line-clamp-2 font-bold">
+                    {product.name}
+                  </Link>
+                  <div className="text-lg md:text-base text-gray-600 line-clamp-3">{product.description}</div>
+                  <div className="flex items-center text-xl md:text-base gap-4">
+                    {product.sales === product.stock ? (
+                      <span className="text-red-500 font-bold text-lg">Out of Stock</span>
+                    ) : (
+                      <>
+                        <button className="bg-blue-500 flex items-center justify-center text-base h-10 text-white px-4 py-2 rounded-md">
+                          Buy Now
+                        </button>
+                        <button className="border border-blue-500 flex items-center justify-center text-base h-10 w-10 text-blue-500 p-2 rounded-md">
+                          <MdAddShoppingCart />
+                        </button>
+                      </>
+                    )}
+                    <button className="ml-5 text-2xl md:text-2xl text-red-600">
+                      <FaRegHeart />
+                    </button>
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
-          <div className="image flex items-center justify-start w-[40%] h-full">
-            <Link to={`/product/${product._id}`}>
-              <img
-                className="h-[400px] w-[400px] border border-black rounded-lg object-cover bg-center transform scale-90 transition-transform duration-300 hover:scale-95"
-                src={product.images[0]}
-                alt=""
-              />
-            </Link>
-          </div>
+          ))}
         </div>
-      ))}
-      <div className="absolute flex items-center justify-center h-full top-1/2 right-4 transform -translate-y-1/2 cursor-pointer z-10 bg-transparent">
-        <FaChevronRight onClick={() => handleNavigation(1)} className="text-3xl text-gray-700 hover:text-black" />
+      </div>
+
+      {/* Left Navigation */}
+      <div className="absolute flex items-center justify-center h-full top-1/2 left-2 md:left-4 transform -translate-y-1/2 cursor-pointer z-10 bg-transparent">
+        <FaChevronLeft
+          onClick={() => handleNavigation(-1)}
+          className="text-2xl md:text-3xl text-gray-700 hover:text-black"
+        />
+      </div>
+
+      {/* Right Navigation */}
+      <div className="absolute flex items-center justify-center h-full top-1/2 right-2 md:right-4 transform -translate-y-1/2 cursor-pointer z-10 bg-transparent">
+        <FaChevronRight
+          onClick={() => handleNavigation(1)}
+          className="text-2xl md:text-3xl text-gray-700 hover:text-black"
+        />
       </div>
     </section>
   );

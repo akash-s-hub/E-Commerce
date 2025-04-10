@@ -1,12 +1,9 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
 
-// https://vite.dev/config/
 export default defineConfig({
-  // server: {
-  //   proxy: {
-  //     "/api": "http://localhost:8000/api/products/trending"
-  //   }
-  // },
+  server: {
+    allowedHosts: ['5330-2409-40c1-2012-8c26-48d1-2099-1aba-8e88.ngrok-free.app']
+  },
   plugins: [react()],
-})
+});
