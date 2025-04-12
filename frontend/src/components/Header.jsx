@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
-import { FaSearch, FaBars, FaRegUserCircle, FaTimes } from "react-icons/fa";
+import { FaSearch, FaBars, FaRegUserCircle, FaTimes, FaRegHeart } from "react-icons/fa";
 import { IoCartOutline } from "react-icons/io5";
 import ProductContext from "../context/Product/ProductContext";
 import { Link, useNavigate } from "react-router-dom";
@@ -67,8 +67,9 @@ const Header = () => {
 
           {/* Icons for Tablet/Desktop View */}
           <div className="hidden md:flex items-center gap-6">
-            <FaRegUserCircle className="cursor-pointer text-2xl" />
-            <IoCartOutline className="cursor-pointer text-2xl" />
+            <Link to={`/wishlist`}><FaRegHeart className="cursor-pointer text-2xl font-bold" /></Link>
+            <Link to={`/cart`}><IoCartOutline className="cursor-pointer text-2xl font-bold" /></Link>
+            <Link to={`/profile`}><FaRegUserCircle className="cursor-pointer text-2xl font-bold" /></Link>
           </div>
         </div>
       </header>

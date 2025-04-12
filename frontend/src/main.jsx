@@ -1,7 +1,7 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } from 'react-router-dom'
-import { AddProductsPage, BrandsPage, CategoriesPage, NotFoundPage, HomePage, ProductPage, SearchPage, LoginPage, SignupPage } from "./pages"
+import { AddProductsPage, BrandsPage, CategoriesPage, NotFoundPage, HomePage, ProductPage, SearchPage, LoginPage, SignupPage, WishlistPage, CartPage, ProfilePage, CheckoutPage } from "./pages"
 import { Layout, LayoutNoHeader } from "./layout/index.js"
 import AllContext from './context/AllContext.jsx'
 
@@ -14,6 +14,10 @@ const router = createBrowserRouter(
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
+        <Route path="/wishlist" element={<WishlistPage />} />
+        <Route path="/cart" element={<CartPage />} />
+        <Route path="/checkout" element={<CheckoutPage />} />
+        <Route path="/profile" element={<ProfilePage />} />
         <Route path="/search" element={<SearchPage />} />
         <Route path="product/:productid" element={<ProductPage />} />
         <Route path="brand/:brand" element={<BrandsPage />} />
