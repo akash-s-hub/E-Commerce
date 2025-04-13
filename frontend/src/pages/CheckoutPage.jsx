@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import CartContext from '../context/Cart/CartContext';
+import { Link } from 'react-router-dom';
 
 const CheckoutPage = () => {
   const { cart, loading } = useContext(CartContext); // Access cart and loading from context
@@ -26,7 +27,6 @@ const CheckoutPage = () => {
       ) : (
         <>
           <div className='flex flex-col lg:flex-row justify-center items-start w-full gap-5'>
-            {/* Shipping Address Form */}
             <div className='w-full lg:w-1/2 flex flex-col gap-4 border border-slate-300 rounded-md p-5'>
               <span className='font-semibold'>Shipping Address</span>
               <form className='flex flex-col gap-4'>
@@ -40,35 +40,32 @@ const CheckoutPage = () => {
               </form>
             </div>
 
-            {/* Ordered Products */}
             <div className='w-full lg:w-1/2 text-sm border border-slate-300 flex flex-col p-5 rounded-md gap-4'>
               <span className='font-semibold'>Ordered Products</span>
               {cart.map((product, index) => (
                 <div key={index} className='flex items-center justify-start gap-4'>
-                  {/* Product Image */}
                   <img className='h-16 w-16 rounded-md object-cover' src={product.images[0]} alt={product.name} />
-
-                  {/* Product Details */}
                   <div className='flex flex-col justify-between'>
                     <span className='line-clamp-2'>{product.name}</span>
                     <span className='text-xs text-gray-500'>₹ {product.price} x {product.quantity}</span>
                   </div>
-
-                  {/* Product Total */}
                   <span className='ml-auto text-green-500 font-semibold'>
                     ₹ {(product.price * product.quantity).toFixed(0)}
                   </span>
                 </div>
               ))}
-              {/* Total Price */}
               <div className='mt-4 text-lg font-semibold text-center'>
                 Total: ₹ {total.toFixed(2)}
               </div>
             </div>
           </div>
+          <Link className='bg-blue-600 text-white place-self-center rounded-md mt-4 py-1 px-4' to={`/payment`}>
+            <button>Next</button>
+          </Link>
         </>
-      )}
-    </div>
+      )
+      }
+    </div >
   );
 };
 

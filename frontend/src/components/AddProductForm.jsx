@@ -7,9 +7,9 @@ const AddProductForm = () => {
   const { productData, setProductData, handleChange, handleSubmit } = useContext(AddProductContext)
 
   return (
-    <>
+    <div className="flex justify-center items-center p-5">
       <ToastContainer />
-      <div className="w-full lg:max-w-[80%] mx-auto bg-white p-8 border-gray-200">
+      <div className="w-full lg:max-w-[80%] mx-auto bg-white p-8 border-gray-200 rounded-md">
         <h2 className="text-3xl font-bold mb-6 text-left text-gray-700">🛍 Add New Product</h2>
 
         {/* 🚀 Responsive Form */}
@@ -67,7 +67,7 @@ const AddProductForm = () => {
           </div>
         </form>
       </div>
-    </>
+    </div>
   );
 };
 

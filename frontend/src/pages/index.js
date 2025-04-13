@@ -6,6 +6,7 @@ export { default as CheckoutPage } from "./CheckoutPage";
 export { default as HomePage } from "./HomePage";
 export { default as LoginPage } from "./LoginPage";
 export { default as NotFoundPage } from "./NotFoundPage";
+export { default as PaymentPage } from "./PaymentPage";
 export { default as ProductPage } from "./ProductPage";
 export { default as ProfilePage } from "./ProfilePage";
 export { default as SearchPage } from "./SearchPage";

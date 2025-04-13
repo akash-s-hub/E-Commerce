@@ -37,9 +37,11 @@ const Header = () => {
         {/* Centered Container */}
         <div className="w-full max-w-7xl mx-auto flex justify-between items-center">
           {/* Logo */}
-          <div className="text-lg font-semibold cursor-pointer">
-            Store
-          </div>
+          <Link to={`/`}>
+            <div className="text-lg font-semibold cursor-pointer">
+              Store
+            </div>
+          </Link>
 
           {/* Icons for Mobile View */}
           <div className="flex items-center gap-4 md:hidden">
@@ -101,10 +103,10 @@ const Header = () => {
               <FaTimes className="text-xl" />
             </button>
           </div>
-          <Link to={"/"} className="text-black hover:text-blue-500">👤 Profile</Link>
-          <Link to={"/"} className="text-black hover:text-blue-500">📦 Your Orders</Link>
-          <Link to={"/"} className="text-black hover:text-blue-500">❤️ Wishlist</Link>
-          <Link to={"/"} className="text-black hover:text-blue-500">🛒 Cart</Link>
+          <Link to={"/profile"} className="text-black hover:text-blue-500">👤 Profile</Link>
+          {/* <Link to={"/"} className="text-black hover:text-blue-500">📦 Your Orders</Link> */}
+          <Link to={"/wishlist"} className="text-black hover:text-blue-500">❤️ Wishlist</Link>
+          <Link to={"/cart"} className="text-black hover:text-blue-500">🛒 Cart</Link>
           <Link to={"/"} className="text-black hover:text-blue-500">📞 Customer Support</Link>
         </div>
       )}
